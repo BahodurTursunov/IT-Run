@@ -22,16 +22,16 @@ namespace Fabric.Controllers
             return (IEnumerable<Product>)_service.GetAll();
         }
 
-        [HttpGet("Create")]
-        public string Post([FromBody] Product product)
+        [HttpPost("Create")]
+        public string Post([FromBody] Product item)
         {
-            return _service.Create(product);
+            return _service.Create(item);
         }
 
         [HttpPut("Update")]
-        public string Put([FromQuery] Guid id, [FromBody] Product product)
+        public string Put([FromQuery] Guid id, [FromBody] Product item)
         {
-            return _service.Update(id, product);
+            return _service.Update(id, item);
         }
 
         [HttpDelete("Delete")]

@@ -27,6 +27,7 @@ namespace Fabric.Servises
 
         public string Create(Customer item)
         {
+            item.Id = Guid.NewGuid();
             if (string.IsNullOrEmpty(item.FirstName))
             {
                 return "The name cannot be empty";

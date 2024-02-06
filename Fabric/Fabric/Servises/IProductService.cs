@@ -12,7 +12,7 @@ namespace Fabric.Servises
         /// <param name="id">Id of item</param>
         /// <returns>returns item if found otherwase null</returns>
         Product GetById(Guid id);
-        string Create(Product product);
+        string Create(Product item);
         string Update(Guid id, Product item);
         string Delete(Guid id);
     }

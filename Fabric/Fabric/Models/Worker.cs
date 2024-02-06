@@ -8,12 +8,5 @@
         {
             Console.WriteLine($"Full Name: {person.FullName}, Role: {role}, BirthDay: {person.Birthday}");
         }
-
-        public override void DoWork()
-        {
-            base.DoWork();
-
-            Console.WriteLine("I am done " + GetType().Name + " from overwriten method");
-        }
     }
 }

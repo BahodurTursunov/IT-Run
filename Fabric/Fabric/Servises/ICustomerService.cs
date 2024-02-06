@@ -8,7 +8,7 @@ namespace Fabric.Servises
 
         Customer GetById(Guid id);
 
-        string Create(Customer customer);
+        string Create(Customer item);
 
         string Update(Guid id, Customer item);
 

@@ -21,8 +21,7 @@ namespace Fabric
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddSingleton(typeof(IMemoryRepository<>), typeof(MemoryRepository<>));
 
-            builder.Services.AddTransient<IProductService, ProductService>();
-            builder.Services.AddTransient<ICustomerService, CustomerService>();
+           
 
             var app = builder.Build();
 
