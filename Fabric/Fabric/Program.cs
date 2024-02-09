@@ -1,6 +1,8 @@
 using System.ComponentModel.Design;
 using Fabric.Repositories;
 using Fabric.Servises;
+using Microsoft.EntityFrameworkCore;
+using Fabric.FabricContext;
 
 namespace Fabric
 {
@@ -12,6 +14,7 @@ namespace Fabric
 
             // Add services to the container.
 
+            builder.Services.AddDbContext<FabricContext>(con=>con.UseSqlServer(FabricContext.ConnectionString));
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
