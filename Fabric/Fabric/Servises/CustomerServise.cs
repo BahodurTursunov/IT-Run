@@ -1,7 +1,7 @@
-﻿using Fabric.Models;
-using Fabric.Repositories;
+﻿using FabricSystem.Models;
+using FabricSystem.Repositories;
 
-namespace Fabric.Servises
+namespace FabricSystem.Servises
 {
 
     /// <summary>

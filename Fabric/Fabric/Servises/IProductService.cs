@@ -1,6 +1,6 @@
-﻿using Fabric.Models;
+﻿using FabricSystem.Models;
 
-namespace Fabric.Servises
+namespace FabricSystem.Servises
 {
     public interface IProductService
     {

@@ -1,9 +1,9 @@
-﻿using Fabric.Infrastucture;
-using Fabric.Models;
-using Fabric.Servises;
+﻿using FabricSystem.Infrastucture;
+using FabricSystem.Models;
+using FabricSystem.Servises;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fabric.Controllers
+namespace FabricSystem.Controllers
 {
 
     [ApiController]

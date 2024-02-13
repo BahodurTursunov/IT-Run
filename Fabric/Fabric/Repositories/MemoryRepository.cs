@@ -1,6 +1,6 @@
-﻿using Fabric.Models;
+﻿using FabricSystem.Models;
 using System;
-namespace Fabric.Repositories
+namespace FabricSystem.Repositories
 {
     public class MemoryRepository<T> : IMemoryRepository<T> where T : BaseEntity
     {

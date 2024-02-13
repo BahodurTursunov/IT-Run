@@ -1,8 +1,8 @@
-﻿using Fabric.Models;
-using Fabric.Servises;
+﻿using FabricSystem.Models;
+using FabricSystem.Servises;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fabric.Controllers
+namespace FabricSystem.Controllers
 {
     [ApiController]
     [Route("[controller]")]

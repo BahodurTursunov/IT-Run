@@ -1,4 +1,4 @@
-﻿namespace Fabric.Models
+﻿namespace FabricSystem.Models
 {
     public abstract class Person : BaseEntity
     {

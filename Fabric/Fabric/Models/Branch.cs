@@ -1,4 +1,4 @@
-﻿namespace Fabric.Models
+﻿namespace FabricSystem.Models
 {
     public class Branch
     {

@@ -1,7 +1,7 @@
-﻿using Fabric.Models;
+﻿using FabricSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Fabric.Infrastucture
+namespace FabricSystem.Infrastucture
 {
     public class FabricContext : DbContext
     {
@@ -15,5 +15,17 @@ namespace Fabric.Infrastucture
         public DbSet<Person> Persons { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Ignore<BaseEntity>();
+
+            var product = new Product("HeadAndShoulders", "Шампунь", 200);
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+                entity.HasData(bank);
+            });
+        }
     }
 }

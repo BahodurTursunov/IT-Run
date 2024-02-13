@@ -1,18 +1,19 @@
-using Fabric.Infrastucture;
-using Fabric.Repositories;
-using Fabric.Servises;
+using FabricSystem.Infrastucture;
+using FabricSystem.Repositories;
+using FabricSystem.Servises;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-namespace Fabric
+namespace 
+    FabricSystem
 {
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            SqlConnection conn = new SqlConnection("Server=localhost;Database=Fabric;integrated security=True;TrustServerCertificate=true;");
-            
-            //builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=BAKHAKOMP;integrated security=True; database=Fabric;TrustServerCertificate=true;"));
+            builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;"));
+
 
             // Add services to the container.
 

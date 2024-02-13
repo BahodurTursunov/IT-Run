@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fabric.Models
+namespace FabricSystem.Models
 {
     public class Customer : Person
     {

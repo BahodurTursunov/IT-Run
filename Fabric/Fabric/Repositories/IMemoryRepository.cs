@@ -1,6 +1,6 @@
-﻿using Fabric.Models;
+﻿using FabricSystem.Models;
 
-namespace Fabric.Repositories
+namespace FabricSystem.Repositories
 {
     public interface IMemoryRepository<T> where T : BaseEntity
     {
