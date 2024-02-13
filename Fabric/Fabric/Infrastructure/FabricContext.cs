@@ -1,17 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Fabric.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Fabric.FabricContext
+namespace Fabric.Infrastucture
 {
     public class FabricContext : DbContext
     {
-        public static string ConnectionString = "Persist Security Info=False;Trusted_Connection=True;database=AdventureWorks;server=(local)";
-
-
         public FabricContext(DbContextOptions<FabricContext> options) : base(options)
         {
-            Database.EnsureCreated();
+           
         }
 
+        public DbSet<Worker> Workers { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
     }
 }

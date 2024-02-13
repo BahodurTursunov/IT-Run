@@ -1,4 +1,5 @@
-﻿using Fabric.Models;
+﻿using Fabric.Infrastucture;
+using Fabric.Models;
 using Fabric.Servises;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,22 +11,28 @@ namespace Fabric.Controllers
     public class ProductController : ControllerBase
     {
         readonly IProductService _service;
+        private readonly FabricContext _fabricContext;
 
-        public ProductController(IProductService customerService)
+        public ProductController(IProductService service, FabricContext fabricContext)
         {
-            _service = customerService;
+            _service = service;
+            _fabricContext = fabricContext;
         }
 
         [HttpGet("AllItems")]
         public IEnumerable<Product> Get()
         {
-            return (IEnumerable<Product>)_service.GetAll();
+            //return (IEnumerable<Product>)_service.GetAll();
+            return _fabricContext.Products;
         }
 
         [HttpPost("Create")]
-        public string Post([FromBody] Product item)
+        public Product Post([FromBody] Product item)
         {
-            return _service.Create(item);
+            //return _service.Create(item);
+            _fabricContext.Products.Add(item);
+            _fabricContext.SaveChanges();
+            return item;
         }
 
         [HttpPut("Update")]

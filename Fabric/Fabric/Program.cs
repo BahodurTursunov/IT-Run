@@ -1,9 +1,8 @@
-using System.ComponentModel.Design;
+using Fabric.Infrastucture;
 using Fabric.Repositories;
 using Fabric.Servises;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Fabric.FabricContext;
-
 namespace Fabric
 {
     public class Program
@@ -11,10 +10,12 @@ namespace Fabric
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            SqlConnection conn = new SqlConnection("Server=localhost;Database=Fabric;integrated security=True;TrustServerCertificate=true;");
+            
+            //builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=BAKHAKOMP;integrated security=True; database=Fabric;TrustServerCertificate=true;"));
 
             // Add services to the container.
 
-            builder.Services.AddDbContext<FabricContext>(con=>con.UseSqlServer(FabricContext.ConnectionString));
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -24,7 +25,7 @@ namespace Fabric
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddSingleton(typeof(IMemoryRepository<>), typeof(MemoryRepository<>));
 
-           
+
 
             var app = builder.Build();
 
