@@ -5,8 +5,8 @@ namespace FabricSystem.Servises
 {
     public class ProductService : IProductService
     {
-        IMemoryRepository<Product> _repository;
-        public ProductService(IMemoryRepository<Product> repository)
+        ISQLRepository<Product> _repository;
+        public ProductService(ISQLRepository<Product> repository)
         {
             _repository = repository;
         }
@@ -39,12 +39,17 @@ namespace FabricSystem.Servises
         public string Update(Guid id, Product item)
         {
             var _item = _repository.GetById(id);
-            if (_item is null)
+            if (_item is not null)
             {
-                return "Item not found";
+                _item.ProductName = item.ProductName;
+                _item.ProductDescription = item.ProductDescription;
+                _item.Price = item.Price;
+
+                var result = _repository.Update(item);
+                if (result)
+                    return "Item updated";
             }
-            _repository.Update(_item);
-            return "Item updated";
+            return "Item not updated";
         }
 
         public string Delete(Guid id)

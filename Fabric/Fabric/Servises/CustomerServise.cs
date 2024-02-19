@@ -3,14 +3,10 @@ using FabricSystem.Repositories;
 
 namespace FabricSystem.Servises
 {
-
-    /// <summary>
-    /// Клиенты
-    /// </summary>
     public class CustomerService : ICustomerService
     {
-        IMemoryRepository<Customer> _repository;
-        public CustomerService(IMemoryRepository<Customer> repository)
+        ISQLRepository<Customer> _repository;
+        public CustomerService(ISQLRepository<Customer> repository)
         {
             _repository = repository;
         }
@@ -42,24 +38,28 @@ namespace FabricSystem.Servises
         public string Update(Guid id, Customer item)
         {
             var _item = _repository.GetById(id);
-            if (_item is null)
+            if (_item is not null)
             {
-                return "Item not found";
+                _item.FirstName = item.FirstName;
+                _item.LastName = item.LastName;
+                _item.Status = item.Status;
+                _item.Birthday = item.Birthday;
+
+                var result = _repository.Update(item);
+                if (result) 
+                    return "Item updated";
             }
-            _repository.Update(_item);
-            return "Item updated";
+            return "Item not updated";
         }
 
         public string Delete(Guid id)
         {
-            var _item = _repository.GetById(id);
-            if (_item is null)
-            {
+            var result = _repository.Delete(id);
+            if (result)
+                return "Item deleted";
+            else
                 return "Item not found";
-            }
-            _repository.Delete(id);
 
-            return "Item deleted";
         }
     }
 }

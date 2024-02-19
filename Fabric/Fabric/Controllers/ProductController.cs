@@ -10,7 +10,8 @@ namespace FabricSystem.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        readonly IProductService _service;
+
+        private readonly IProductService _service;
         private readonly FabricContext _fabricContext;
 
         public ProductController(IProductService service, FabricContext fabricContext)
@@ -23,15 +24,15 @@ namespace FabricSystem.Controllers
         public IEnumerable<Product> Get()
         {
             //return (IEnumerable<Product>)_service.GetAll();
-            return _fabricContext.Products;
+            return _fabricContext.Product;
         }
 
         [HttpPost("Create")]
         public Product Post([FromBody] Product item)
         {
-            //return _service.Create(item);
-            _fabricContext.Products.Add(item);
-            _fabricContext.SaveChanges();
+            _service.Create(item);
+            //_fabricContext.Products.Add(item);
+            //_fabricContext.SaveChanges();
             return item;
         }
 

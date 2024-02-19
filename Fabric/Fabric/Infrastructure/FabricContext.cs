@@ -7,25 +7,29 @@ namespace FabricSystem.Infrastucture
     {
         public FabricContext(DbContextOptions<FabricContext> options) : base(options)
         {
-           
+            Database.EnsureCreated();
         }
 
-        public DbSet<Worker> Workers { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Person> Persons { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-
+        public DbSet<Worker> Worker { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Person> Person { get; set; }
+        public DbSet<Customer> Customer { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<BaseEntity>();
-
-            var product = new Product("HeadAndShoulders", "Шампунь", 200);
-
-            modelBuilder.Entity<Product>(entity =>
-            {
-                entity.HasKey(p => p.Id);
-                entity.HasData(bank);
-            });
+            modelBuilder.Entity<Product>().HasData(
+                    new Product { ProductName = "Shampoo", ProductDescription = "Head and shoulders"}
+            );
         }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Ignore<BaseEntity>();
+
+        //    var product = new Product("HeadAndShoulders", "Шампунь", 200);
+
+        //    modelBuilder.Entity<Product>(entity =>
+        //    {
+        //        entity.HasKey(p => p.Id);
+        //    });
+        //}
     }
 }
