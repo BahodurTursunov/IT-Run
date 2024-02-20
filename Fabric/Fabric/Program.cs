@@ -15,13 +15,13 @@ namespace
         {
 
             var builder = WebApplication.CreateBuilder(args);
-            /* builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=BAKHACOMP;integrated security=True; database=Fabric;TrustServerCertificate=true;"));.LogTo(Console.Write, LogLevel.Information).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));*/
+            builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=BAKHACOMP;integrated security=True; database=Fabric;TrustServerCertificate=true;"));/*.LogTo(Console.Write, LogLevel.Information).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));*/
 
 
-            string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+            //string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // обновлением контекст ApplicationContext в качестве сервиса в приложение
-            builder.Services.AddDbContext<FabricContext>(options => options.UseSqlServer(connection));
+            //builder.Services.AddDbContext<FabricContext>(options => options.UseSqlServer(connection));
 
 
 
@@ -37,7 +37,7 @@ namespace
 
             var app = builder.Build();
 
-            app.MapGet("/", (FabricContext db) => db.Product.ToList());
+           // app.MapGet("/", (FabricContext db) => db.Product.ToList());
 
 
             // Configure the HTTP request pipeline.

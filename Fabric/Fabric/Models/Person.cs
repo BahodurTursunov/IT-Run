@@ -6,7 +6,7 @@
 
         public string LastName { get; set; }
 
-        public string FullName => $"{FirstName}" + $"{ LastName}";
+        public string FullName => $"{FirstName} " + $"{ LastName}";
 
         public DateTimeOffset Birthday { get; set; }
     }

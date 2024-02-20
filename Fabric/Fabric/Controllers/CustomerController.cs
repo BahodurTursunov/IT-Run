@@ -1,4 +1,5 @@
-﻿using FabricSystem.Models;
+﻿using FabricSystem.Infrastucture;
+using FabricSystem.Models;
 using FabricSystem.Servises;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +10,19 @@ namespace FabricSystem.Controllers
     public class CustomerController : ControllerBase
     {
         readonly ICustomerService _service;
+        private readonly FabricContext _fabricContext;
 
-        public CustomerController(ICustomerService service)
+
+        public CustomerController(ICustomerService service, FabricContext fabricContext)
         {
             _service = service;
+            _fabricContext = fabricContext;
         }
 
         [HttpGet("AllItems")]
-        public IEnumerable<Customer> Get()
+        public IQueryable<Customer> Get()
         {
-            return _service.GetAll();
+            return _fabricContext.Customer;
         }
 
         [HttpGet("GetItemById")]
@@ -28,9 +32,12 @@ namespace FabricSystem.Controllers
         }
 
         [HttpPost("Create")]
-        public string Post([FromBody] Customer item)
+        public Customer Post([FromBody] Customer item)
         {
-            return _service.Create(item);
+            _service.Create(item);
+            _fabricContext.Add(item);
+            _fabricContext.SaveChanges();
+            return item;
         }
 
         [HttpPut("Update")]
@@ -40,9 +47,14 @@ namespace FabricSystem.Controllers
         }
 
         [HttpDelete("Delete")]
-        public string Delete([FromQuery] Guid id)
+        public IActionResult Delete([FromQuery] Guid id)
         {
-            return _service.Delete(id);
+            var existingItem = _service.GetById(id);
+            if (existingItem == null) 
+                return NotFound();
+            //_fabricContext.Delete(id);
+
+            return NoContent();
         }
     }
 }
