@@ -18,19 +18,7 @@ namespace
             builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;")
                 .LogTo(Console.Write, LogLevel.Information)
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-            //builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;")
-            //.LogTo(Console.Write, LogLevel.Information));
-            //string connectionString = "server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;";
-            //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-
-
-            //string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-
-            // обновлением контекст ApplicationContext в качестве сервиса в приложение
-            // builder.Services.AddDbContext<FabricContext>(options => options.UseSqlServer(connection));
-
-
-
+            
             // Add services to the container.
             builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -47,7 +35,8 @@ namespace
             {
                 var context = scope.ServiceProvider.GetRequiredService<FabricContext>();
                 context.Database.EnsureCreated();
-
+                context.Database.Migrate();
+               
                 //TODO -- NoTracking
                 //var bank = context.Banks.First();
                 //var oldName = bank.Name;
@@ -72,7 +61,6 @@ namespace
                 //var bank2 = branch.Bank;
             }
 
-            // app.MapGet("/", (FabricContext db) => db.Product.ToList());
 
 
             // Configure the HTTP request pipeline.

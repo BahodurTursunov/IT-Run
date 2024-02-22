@@ -30,8 +30,8 @@ namespace FabricSystem.Controllers
         public Product Post([FromBody] Product item)
         {
             _service.Create(item);
-            _fabricContext.Add(item);
-            _fabricContext.SaveChanges();
+            //_fabricContext.Add(item);
+            //_fabricContext.SaveChanges();
             return item;
         }
 
