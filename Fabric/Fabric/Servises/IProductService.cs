@@ -4,7 +4,7 @@ namespace FabricSystem.Servises
 {
     public interface IProductService
     {
-        IEnumerable<Product> GetAll();
+        IQueryable<Product> GetAll();
 
         /// <summary>
         /// This is for getting item by Id

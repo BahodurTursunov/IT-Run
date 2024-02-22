@@ -11,7 +11,7 @@ namespace FabricSystem.Servises
             _repository = repository;
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IQueryable<Customer> GetAll()
         {
             return _repository.GetAll();
         }
@@ -25,9 +25,7 @@ namespace FabricSystem.Servises
         {
             item.Id = Guid.NewGuid();
             if (string.IsNullOrEmpty(item.FirstName))
-            {
                 return "The name cannot be empty";
-            }
             else
             {
                 _repository.Create(item);
@@ -61,5 +59,7 @@ namespace FabricSystem.Servises
                 return "Item not found";
 
         }
+
+        
     }
 }

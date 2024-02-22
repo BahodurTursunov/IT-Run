@@ -15,13 +15,19 @@ namespace
         {
 
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=BAKHACOMP;integrated security=True; database=Fabric;TrustServerCertificate=true;"));/*.LogTo(Console.Write, LogLevel.Information).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));*/
+            builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;")
+                .LogTo(Console.Write, LogLevel.Information)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            //builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;")
+            //.LogTo(Console.Write, LogLevel.Information));
+            //string connectionString = "server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;";
+            //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
 
             //string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // обновлением контекст ApplicationContext в качестве сервиса в приложение
-            //builder.Services.AddDbContext<FabricContext>(options => options.UseSqlServer(connection));
+            // builder.Services.AddDbContext<FabricContext>(options => options.UseSqlServer(connection));
 
 
 
@@ -37,7 +43,36 @@ namespace
 
             var app = builder.Build();
 
-           // app.MapGet("/", (FabricContext db) => db.Product.ToList());
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<FabricContext>();
+                context.Database.EnsureCreated();
+
+                //TODO -- NoTracking
+                //var bank = context.Banks.First();
+                //var oldName = bank.Name;
+                //context.Attach(bank);
+                //bank.Name = "Test";
+                ////context.Update(bank);
+                //context.SaveChanges();
+
+                //bank.Name = oldName;
+                //context.SaveChanges();
+
+                //TODO - LazyLoadingProxies
+                //var bank = context.Banks.First();
+                //var name = bank.Name;
+                //var branchs = bank.Branchs;
+
+
+                //TODO: Lazy loading for spesific properties
+                //var branch = context.Branchs.First();
+                //var address = branch.Address;
+                //var bank = branch.Bank;
+                //var bank2 = branch.Bank;
+            }
+
+            // app.MapGet("/", (FabricContext db) => db.Product.ToList());
 
 
             // Configure the HTTP request pipeline.

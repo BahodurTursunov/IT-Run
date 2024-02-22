@@ -4,7 +4,7 @@ namespace FabricSystem.Servises
 {
     public interface ICustomerService
     {
-        IEnumerable<Customer> GetAll();
+        IQueryable<Customer> GetAll();
 
         Customer GetById(Guid id);
 

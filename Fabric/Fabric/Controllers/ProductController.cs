@@ -10,7 +10,6 @@ namespace FabricSystem.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-
         private readonly IProductService _service;
         private readonly FabricContext _fabricContext;
 
@@ -21,10 +20,10 @@ namespace FabricSystem.Controllers
         }
 
         [HttpGet("AllItems")]
-        public IEnumerable<Product> Get()
+        public IQueryable<Product> Get()
         {
-            //return (IEnumerable<Product>)_service.GetAll();
-            return _fabricContext.Product;
+            return _service.GetAll();
+            //return _fabricContext.Product;
         }
 
         [HttpPost("Create")]

@@ -11,7 +11,7 @@ namespace FabricSystem.Servises
             _repository = repository;
         }
 
-        public IEnumerable<Product> GetAll()
+        public IQueryable<Product> GetAll()
         {
             return _repository.GetAll();
         }

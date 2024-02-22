@@ -10,19 +10,18 @@ namespace FabricSystem.Controllers
     public class CustomerController : ControllerBase
     {
         readonly ICustomerService _service;
-        private readonly FabricContext _fabricContext;
+        //private readonly FabricContext _fabricContext;
 
-
-        public CustomerController(ICustomerService service, FabricContext fabricContext)
+        public CustomerController(ICustomerService service/*, FabricContext fabricContext*/)
         {
             _service = service;
-            _fabricContext = fabricContext;
+            //_fabricContext = fabricContext;
         }
 
         [HttpGet("AllItems")]
         public IQueryable<Customer> Get()
         {
-            return _fabricContext.Customer;
+            return _service.GetAll();
         }
 
         [HttpGet("GetItemById")]
@@ -35,8 +34,8 @@ namespace FabricSystem.Controllers
         public Customer Post([FromBody] Customer item)
         {
             _service.Create(item);
-            _fabricContext.Add(item);
-            _fabricContext.SaveChanges();
+           // _fabricContext.Add(item);
+            //_fabricContext.SaveChanges();
             return item;
         }
 
@@ -47,14 +46,12 @@ namespace FabricSystem.Controllers
         }
 
         [HttpDelete("Delete")]
-        public IActionResult Delete([FromQuery] Guid id)
+        public string Delete([FromQuery] Guid id)
         {
-            var existingItem = _service.GetById(id);
-            if (existingItem == null) 
-                return NotFound();
-            //_fabricContext.Delete(id);
-
-            return NoContent();
+            //var existingItem = _service.GetById(id);
+            //if (existingItem == null) 
+            //    return NotFound();
+            return _service.Delete(id);
         }
     }
 }
