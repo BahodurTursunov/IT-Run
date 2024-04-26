@@ -2,7 +2,7 @@
 
 namespace MyProject.Repositories
 {
-    public class MemoryRepository<T> : IMemoryRepository<T> where T : BaseEntity, ICanDoWork
+    public class MemoryRepository<T> : IMemoryRepository<T> where T : BaseEntity
     {
         Dictionary<Guid, T> _items = new Dictionary<Guid, T>();
 

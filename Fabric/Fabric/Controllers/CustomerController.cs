@@ -1,57 +1,66 @@
-﻿using FabricSystem.Infrastucture;
-using FabricSystem.Models;
-using FabricSystem.Servises;
+﻿using System.Text.Json.Serialization;
+using Fabric.Models;
+using Fabric.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using MediatR;
+using Fabric.CQRS.Commands;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Fabric.CQRS.Queryes;
+using Microsoft.Extensions.Logging.Abstractions;
 
-namespace FabricSystem.Controllers
+namespace Fabric.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class CustomerController : ControllerBase
     {
-        readonly ICustomerService _service;
-        //private readonly FabricContext _fabricContext;
+        private readonly IMediator _mediator;
 
-        public CustomerController(ICustomerService service/*, FabricContext fabricContext*/)
+        public CustomerController(IMediator mediator)
         {
-            _service = service;
-            //_fabricContext = fabricContext;
-        }
-
-        [HttpGet("AllItems")]
-        public IQueryable<Customer> Get()
-        {
-            return _service.GetAll();
-        }
-
-        [HttpGet("GetItemById")]
-        public Customer Get(Guid id)
-        {
-            return _service.GetById(id);
+            _mediator = mediator;
         }
 
         [HttpPost("Create")]
-        public Customer Post([FromBody] Customer item)
+        public async Task<ActionResult<Customer>> CreateCustomer(CreateCustomerCommand command)
         {
-            _service.Create(item);
-           // _fabricContext.Add(item);
-            //_fabricContext.SaveChanges();
-            return item;
+            var user = await _mediator.Send(command);
+            return Ok(user);
         }
 
-        [HttpPut("Update")]
-        public string Put([FromQuery] Guid id, [FromBody] Customer item)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Customer>> GetCustomerById(Guid id)
         {
-            return _service.Update(id, item);
+            var query = new GetCustomerByIdQuery() { Id = id };
+            var customer = await _mediator.Send(query);
+            if (customer == null)
+                return NotFound();
+            return Ok(customer);
+        }
+
+        [HttpGet("AllCustomers")]
+        public async Task<ActionResult<Customer>> GetAllCustomers()
+        {
+            var query = new GetAllCustomerQuery();
+            var customers = await _mediator.Send(query);
+            return Ok(customers);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Customer>> UpdateCustomer(Guid id, UpdateCustomerCommand command)
+        {
+            command.Id = id;
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpDelete("Delete")]
-        public string Delete([FromQuery] Guid id)
+        public async Task<IActionResult> DeleteCustomer(DeleteCustomerCommand deleteCustomer)
         {
-            //var existingItem = _service.GetById(id);
-            //if (existingItem == null) 
-            //    return NotFound();
-            return _service.Delete(id);
+            var result = await _mediator.Send(deleteCustomer);
+            return Ok(result);
         }
     }
 }

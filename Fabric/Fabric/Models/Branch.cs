@@ -1,4 +1,4 @@
-﻿namespace FabricSystem.Models
+﻿namespace Fabric.Models
 {
     public class Branch : BaseEntity
     {

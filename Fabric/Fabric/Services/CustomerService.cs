@@ -1,7 +1,7 @@
-﻿using FabricSystem.Models;
-using FabricSystem.Repositories;
+﻿using Fabric.Models;
+using Fabric.Repositories;
 
-namespace FabricSystem.Servises
+namespace Fabric.Services
 {
     public class CustomerService : ICustomerService
     {
@@ -10,17 +10,14 @@ namespace FabricSystem.Servises
         {
             _repository = repository;
         }
-
         public IQueryable<Customer> GetAll()
         {
             return _repository.GetAll();
         }
-
-        public Customer GetById(Guid id)
+        public async Task<Customer> GetById(Guid id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
-
         public string Create(Customer item)
         {
             item.Id = Guid.NewGuid();
@@ -32,16 +29,17 @@ namespace FabricSystem.Servises
                 return $"Created new item with this ID: {item.Id}";
             }
         }
-
         public string Update(Guid id, Customer item)
         {
-            var _item = _repository.GetById(id);
+            var _item = _repository.GetById(id).GetAwaiter().GetResult();
             if (_item is not null)
             {
                 _item.FirstName = item.FirstName;
                 _item.LastName = item.LastName;
                 _item.Status = item.Status;
                 _item.Birthday = item.Birthday;
+                _item.Username= item.Username;
+                _item.Password= item.Password;
 
                 var result = _repository.Update(item);
                 if (result) 
@@ -49,7 +47,6 @@ namespace FabricSystem.Servises
             }
             return "Item not updated";
         }
-
         public string Delete(Guid id)
         {
             var result = _repository.Delete(id);
@@ -57,9 +54,6 @@ namespace FabricSystem.Servises
                 return "Item deleted";
             else
                 return "Item not found";
-
         }
-
-        
     }
 }

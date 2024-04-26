@@ -1,7 +1,7 @@
-﻿using FabricSystem.Models;
-using FabricSystem.Repositories;
+﻿using Fabric.Models;
+using Fabric.Repositories;
 
-namespace FabricSystem.Servises
+namespace Fabric.Services
 {
     public class ProductService : IProductService
     {
@@ -10,17 +10,14 @@ namespace FabricSystem.Servises
         {
             _repository = repository;
         }
-
         public IQueryable<Product> GetAll()
         {
             return _repository.GetAll();
         }
-
-        public Product GetById(Guid id)
+        public async Task<Product> GetById(Guid id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
-
         public string Create(Product item)
         {
             item.Id = Guid.NewGuid();
@@ -35,10 +32,9 @@ namespace FabricSystem.Servises
                 return $"Created new item with this ID: {item.Id}";
             }
         }
-
         public string Update(Guid id, Product item)
         {
-            var _item = _repository.GetById(id);
+            var _item = _repository.GetById(id).GetAwaiter().GetResult();
             if (_item is not null)
             {
                 _item.ProductName = item.ProductName;
@@ -51,7 +47,6 @@ namespace FabricSystem.Servises
             }
             return "Item not updated";
         }
-
         public string Delete(Guid id)
         {
             var _item = _repository.GetById(id);

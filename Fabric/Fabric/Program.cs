@@ -1,86 +1,82 @@
 using System.Text.Json.Serialization;
-using FabricSystem.Infrastucture;
-using FabricSystem.Repositories;
-using FabricSystem.Servises;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Data.SqlClient;
+using Fabric.Infrastructure;
+using Fabric.Middlewares;
+using Fabric.Repositories;
+using Fabric.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-namespace 
-    FabricSystem
+using Microsoft.OpenApi.Models;
+//using Swashbuckle.Swagger;
+
+namespace Fabric
 {
     public class Program
     {
+        public const string AppKey = "TestKey";
         public static void Main(string[] args)
         {
-
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<FabricContext>(con => con.UseSqlServer("server=localhost;integrated security=True; database=Fabric;TrustServerCertificate=true;")
                 .LogTo(Console.Write, LogLevel.Information)
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-            
-            // Add services to the container.
+
             builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<IWorkerService, WorkerService>();
             builder.Services.AddScoped(typeof(ISQLRepository<>), typeof(SQLRepository<>));
 
-            var app = builder.Build();
+            builder.Services.AddEndpointsApiExplorer();
 
-            using (var scope = app.Services.CreateScope())
+            builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+
+            builder.Services.AddSwaggerGen(c =>
             {
-                var context = scope.ServiceProvider.GetRequiredService<FabricContext>();
-                context.Database.EnsureCreated();
-                context.Database.Migrate();
-               
-                //TODO -- NoTracking
-                //var bank = context.Banks.First();
-                //var oldName = bank.Name;
-                //context.Attach(bank);
-                //bank.Name = "Test";
-                ////context.Update(bank);
-                //context.SaveChanges();
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fabric Application APIs", Version = "v1" });
 
-                //bank.Name = oldName;
-                //context.SaveChanges();
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                };
 
-                //TODO - LazyLoadingProxies
-                //var bank = context.Banks.First();
-                //var name = bank.Name;
-                //var branchs = bank.Branchs;
+                c.AddSecurityDefinition("Bearer", securityScheme);
 
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { securityScheme, new List<string>() }  
+                });
+            });
 
-                //TODO: Lazy loading for spesific properties
-                //var branch = context.Branchs.First();
-                //var address = branch.Address;
-                //var bank = branch.Bank;
-                //var bank2 = branch.Bank;
-            }
-
-
-
-            // Configure the HTTP request pipeline.
+            var app = builder.Build();
+           
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseMiddleware<GlobalExceptionMiddleware>();
+            app.UseMiddleware<AppicationKeyMiddleware>();
+            app.UseMiddleware<EndPointListenerMiddleware>();
 
+            app.UseHttpsRedirection();
             app.UseAuthorization();
 
 
             app.MapControllers();
+            app.MapGet("MyMinAPI", (string name) => $"Hello {name}");
 
             app.Run();
         }
-
-
     }
 }
 

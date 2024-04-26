@@ -1,8 +1,8 @@
-﻿namespace FabricSystem.Models
+﻿namespace Fabric.Models
 {
     public class ProductStore : BaseEntity
     {
-        List<Product> products = new List<Product>();
+       // List<Product> products = new List<Product>();
 
 
     }

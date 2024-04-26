@@ -1,8 +1,7 @@
-﻿using FabricSystem.Infrastucture;
-using FabricSystem.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-namespace FabricSystem.Repositories
+﻿using Fabric.Infrastructure;
+using Fabric.Models;
+
+namespace Fabric.Repositories
 {
     public class SQLRepository<T> : ISQLRepository<T> where T : BaseEntity
     {
@@ -18,7 +17,7 @@ namespace FabricSystem.Repositories
             return _fabricContext.Set<T>();
         }
 
-        public T GetById(Guid id)
+        public async Task<T> GetById(Guid id)
         {
             return _fabricContext.Set<T>().SingleOrDefault(w => w.Id == id);
         }
