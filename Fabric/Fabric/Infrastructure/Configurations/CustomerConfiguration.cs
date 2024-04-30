@@ -10,10 +10,36 @@ namespace Fabric.Infrastructure.Configurations
         {
             builder.ToTable("Customers");
 
+
             builder.HasKey(x => x.Id);
 
-            //builder.HasMany(c => c.Orders)
-            //    .WithOne(c => c.Customers);
+            builder
+                .Property(p => p.FirstName)
+                .HasColumnType("NVARCHAR(30)");
+
+            builder
+               .Property(p => p.LastName)
+               .HasColumnType("NVARCHAR(30)");
+
+            builder
+               .Property(p => p.Address)
+               .HasColumnType("NVARCHAR(30)");
+
+            builder
+               .Property(p => p.Username)
+               .HasColumnType("NVARCHAR(30)");
+
+            builder
+               .Property(p => p.Password)
+               .HasColumnType("NVARCHAR(30)");
+
+            builder
+               .Property(p => p.RefreshToken)
+               .HasColumnType("NVARCHAR(30)");
+
+            builder
+              .Property(p => p.Position)
+              .HasColumnType("NVARCHAR(30)");
         }
     }
 }

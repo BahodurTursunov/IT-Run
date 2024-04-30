@@ -19,14 +19,14 @@ namespace Fabric.Services
 
         public async Task<TokenInfo> Login(string username, string password)
         {
-            var user = await _context.Customer.SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
+            var user = await _context.Customers.SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
 
             return await GeneratedJwt(user);
         }
 
         public async Task<TokenInfo> RefreshToken(string refreshToken)
         {
-            var user = await _context.Customer.SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
+            var user = await _context.Customers.SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
 
             return await GeneratedJwt(user);
         }
@@ -39,14 +39,14 @@ namespace Fabric.Services
             if (user.IsBlocked)
                 throw new ArgumentException("User does not have access to login.");
 
-            var userRoles = new string[] { user.Role };
+            var userPositions = new string[] { user.Position };
             var claims = new List<Claim> {
                 new Claim("Id", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FullName),
             };
 
-            foreach (var userRole in userRoles)
-                new Claim(ClaimTypes.Role, userRole);
+            foreach (var userPosition in userPositions)
+                new Claim(ClaimTypes.Role, userPosition);
             
             // создаем JWT-токен
             var jwt = new JwtSecurityToken(

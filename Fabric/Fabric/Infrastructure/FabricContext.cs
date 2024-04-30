@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Fabric.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fabric.Infrastructure
@@ -8,12 +7,12 @@ namespace Fabric.Infrastructure
     public class FabricContext : DbContext
     {
         public FabricContext(DbContextOptions<FabricContext> options) : base(options) { }
-        public DbSet<Customer> Customer { get; set; }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<Worker> Worker { get; set; }
-        public DbSet<Department> Department { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Department> Departments { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Category> Categories{ get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Worker> Workers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

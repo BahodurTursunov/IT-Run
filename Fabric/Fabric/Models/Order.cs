@@ -8,9 +8,9 @@ namespace Fabric.Models
         public string Description { get; set; }
         public int Quantity { get; set; }
         public DateTime PurchareDate { get; set; }
+        public Product Product { get; set; }
+        public Customer Customer { get; set; }
         public Guid ProductId { get; set; }
-        public Guid CustomerId { get; set; } // внешний ключ
-        //public Customer Customers { get; set; } // навигационное свойство
-        //public List<Product> Products { get; set; }
+        public Guid CustomerId { get; set; } 
     }
 }

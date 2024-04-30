@@ -7,7 +7,6 @@ namespace Fabric.Models
         public string ProductDescription { get; set; }
         public decimal Price             { get; set; }
         public int CountOfProduct        { get; set; }
-        //public List<Category> Categories { get; set; }
-        //public List<Order> Orders        { get; set; }
+     
     }   
 }

@@ -5,9 +5,7 @@ namespace Fabric.Auth
 {
     public static class ServiceCollectionExtensions
     {
-#pragma warning disable S1144 // Unused private types or members should be removed
-        static void AddMyAuth(this IServiceCollection service)
-#pragma warning restore S1144 // Unused private types or members should be removed
+        private static void AddMyAuth(this IServiceCollection service)
         {
             service.AddAuthorization(options =>
             {

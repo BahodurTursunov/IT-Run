@@ -50,8 +50,8 @@ namespace Fabric.Services
             {
                 _item.FirstName = item.FirstName;
                 _item.LastName = item.LastName;
-                _item.Role = item.Role;
-                _item.Respontibility = item.Respontibility;
+                _item.Position = item.Position;
+                _item.Responsibility = item.Responsibility;
                 _item.Birthday = item.Birthday;
                 _item.Username = item.Username;
                 _item.Password = item.Password;

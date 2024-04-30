@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    
+
     [HttpPost("RefreshToken")]
     public async Task<IActionResult> RefreshToken(string refreshToken)
     {
